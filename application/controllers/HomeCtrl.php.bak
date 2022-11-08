@@ -1,0 +1,38 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class HomeCtrl extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		$this->load->model('CommonModel', 'cm');
+	}
+
+    public function index(){
+		$this->load->helper('form');
+		$data['patient']=$this->cm->common_select('patient');
+		$this->load->view('home',$data);
+	}
+	
+	
+	public function store(){
+		$ud['name']=$this->input->post('name');
+		$ud['contact']=$this->input->post('contact');
+		$ud['address']=$this->input->post('address');
+		$ud['area']=$this->input->post('area');
+		$ud['blood_group']=$this->input->post('blood_group');
+
+		if($this->cm->common_insert('patient',$ud)){
+			
+			$this->session->set_flashdata('msg','<b class="text-success">Data saved</b>');
+			redirect('/');
+		}else{
+			$this->session->set_flashdata('msg','<b class="text-danger">Please Try again</b>');
+			redirect('/');
+		}
+            
+        
+	}
+
+
+}
